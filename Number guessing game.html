@@ -1,0 +1,122 @@
+<!DOCTYPE 'html'>
+<html>
+    <head>
+        <meta charset = 'utf-8'>
+        <title>Number guessing game</title>
+        <style>
+            html{
+                font-family: sans-serif;
+            }
+
+            body{
+                width:50%;
+                max-width:800px;
+                min-width:480px;
+                margin:0 auto; 
+            }
+
+            .lastResult{
+                color: white;
+                padding: 3px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Number guessing game</h1>
+        <p>We have selected a random number between 1 and 100. See if you can guess it in 10 turns or fewer. We'll tell you if your guess was too high or too low.</p>
+        <div class="form">
+            <label for="guessField">Enter a guess: </label>
+            <input type="text" id="guessField" class="guessField">
+            <input type="submit" value ="Submit guess" class="guessSubmit">
+        </div>
+        <div class = "resultParas">
+            <p class = "guesses"></p>
+            <p class ="lastResult"></p>
+            <p class = "lowOrHi"></p>
+        </div>
+        <script>
+            let randomNumber = Math.floor(Math.random() * 100 + 1)
+            
+            const guesses = document.querySelector('.guesses');
+            const lastResult = document.querySelector('.lastResult');
+            const lowOrHi = document.querySelector('.lowOrHi');
+
+            const guessSubmit = document.querySelector('.guessSubmit');
+            const guessField = document.querySelector('.guessField');
+
+            let guessCount = 1;
+            let resetButton;
+            //submit button이 눌릴 때마다 checkGuess()가 실행되도록 설정하면 될듯? -> event와 관련
+            // JS는 function의 컴파일? 문서내 위치?는 중요하지 않나?
+            
+            function checkGuess(){
+                let userGuess = Number(guessField.value);
+                if (guessCount === 1){
+                    guesses.textContent = 'Previous guesses: ';
+                }
+                guesses.textContent += userGuess + ' ';
+
+                if (userGuess === randomNumber){
+                    lastResult.textContent = 'Congratulations! You got it right!';
+                    //JS에서 style 적용하는 방식
+                    lastResult.style.backgroundColor = 'green';
+                    lowOrHi.textContent = '';
+                    setGameOver();
+                } else if (guessCount === 10){
+                    lastResult.textContent = '!!!GAME OVER!!!';
+                    setGameOver();
+                } else {
+                    lastResult.textContent = 'Wrong!';
+                    lastResult.style.backgroundColor = 'red';
+                    if(userGuess < randomNumber){
+                        //userguess로 써서 오류 발생;;
+                        lowOrHi.textContent = 'Last guess was too low!';
+                    } else if(userGuess > randomNumber){
+                        lowOrHi.textContent = 'Last guess was too high!';
+                        //html에서 내용을 채울 때처럼 ''나 ""없지 않음
+                    }
+                }
+                //geussCount로 써서 에러;;
+                guessCount+=1;
+                guessField.value = '';
+                guessField.focus();
+                //.focus()의 역할은? -> 초점을 맞추는 역할. focus를 줌
+            }
+            //addEventListner로 guessSubmit이 클릭 될 때 마다 checkGuess 호출 되도록
+            guessSubmit.addEventListener('click', checkGuess);
+
+            function setGameOver(){
+                guessField.disabled = true;
+                guessSubmit.disabled = true;
+                resetButton = document.createElement('button')
+                resetButton.textContent = 'Start new game';
+                document.body.appendChild(resetButton);
+                // resetButton에 대한 내용을 모두 설정한다음 append를 진행
+                resetButton.addEventListener('click', resetGame)
+            }
+
+            function resetGame(){
+                guessCount = 1;
+                //class = resultParas 내부의 p 태그 모두 대상
+                const resetParas = document.querySelectorAll('.resultParas p');
+                //.length의 역할 -> p의 개수겠지?
+                for (let i = 0; i < resetParas.length; i++){
+                    //각 표시 class들 초기화
+                    resetParas[i].textContent = '';
+                }
+                //resetButton 지우는 과정인듯
+                resetButton.parentNode.removeChild(resetButton);
+
+                guessField.disabled = false;
+                guessSubmit.disabled = false;
+                guessField.value = '';
+                //.value없으니 오류 뜨고 이후의 구문들 적용 안됨 -> 어떤 field의 값을 변경할때는 .value 챙기기
+                guessField.focus();
+                //마찬가지로 guessField = focus()로 작성하여 이후 구문 작동 X
+                // 디버거 적극적으로 사용하자
+                lastResult.style.backgroundColor = 'white';
+                randomNumber = Math.floor(Math.random()*100)+1;
+            }
+        </script>
+    </body>
+</html>
