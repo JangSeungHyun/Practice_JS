@@ -22,6 +22,7 @@ function setWeather(){
         case 'overcast':
             para.textContent = 'It isn\'t raining';
             break;
+            
         default:
             para.textContent = '';
     }
