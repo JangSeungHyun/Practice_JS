@@ -1,0 +1,19 @@
+html {
+    background-color: white;
+    height: 100%;
+}
+  
+body {
+    height: inherit;
+    background-color: black;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+  
+div {
+    color:grey;
+    display: inline-block;
+    font-size: 10rem;
+}
