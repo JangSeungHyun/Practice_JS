@@ -1,0 +1,28 @@
+p {
+    font-family: sans-serif;
+    height: 250px;
+    width: 480px;
+}
+
+.clock {
+    background-color: black;
+    color: white;
+    font-size:48px;
+    text-align: center;
+    margin: 0 auto;
+    line-height: 250px;
+}
+
+.buttons {
+    padding-top:10px;
+    text-align: center;
+    margin: 0 auto;
+}
+
+button {
+    background-color: grey;
+    color: white;
+    height: 40px;
+    width: 150px;
+    border-radius: 5px;
+}
